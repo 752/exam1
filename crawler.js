@@ -1,11 +1,14 @@
-const https = require('http');
+const http = require('http');
 
 function crawler(cb) {
-  const req = https.get('http://johnyu.cn:3000/albums');
+  const req = http.get('http://johnyu.cn:3000/albums');
   req.end();
   req.on('response', (res) => {
-    res.on('data', (data) => {
-      // console.log(data.toString())
+    let data = ''
+    res.on('data', (chunk) => {
+      data += chunk;
+    })
+    res.on('end', () => {
       cb(JSON.parse(data.toString()))
     })
   });
